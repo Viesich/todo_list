@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('date_of_create', models.DateTimeField(auto_now_add=True)),
                 ('deadline', models.DateTimeField(blank=True, null=True)),
                 ('done', models.BooleanField(default=False)),
-                ('tags', models.ManyToManyField(blank=True, related_name='tasks', to='todo.tag')),
+                ('tags', models.ManyToManyField(blank=True, related_name='tasks', to='tasks.tag')),
             ],
         ),
     ]
