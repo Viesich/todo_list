@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>
+    TODO list
+    <a href="#" class="btn btn-primary link-to-page" style="float: right">Add task</a>
+  </h1>
+   {% for task in tasks %}
+    <ul>
+        <li>
+          <strong>task.name</strong>
+          {% if task.done %}
+            <p style="color: green">
+              Done
+              <a href="#" class="btn link-to-page" style="float: right; background-color: green; color: white;">Undo</a>
+            </p>
+          {% else %}
+            <p style="color: red">
+              Not done
+              <a href="#" class="btn link-to-page" style="float: right; background-color: grey; color: white;">Complete</a>
+            </p>
+          {% endif %}
+        </li>
+        <li><p>Created: task.date_of_create</p></li>
+        <li>
+          Tags: task.tag
+          <a href="#">Update</a>
+          <a href="#">Delete</a>
+        </li>
+    </ul>
+  {% endfor %}
+{% endblock %}
