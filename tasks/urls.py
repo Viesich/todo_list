@@ -7,7 +7,8 @@ from tasks.views import (
     TagDelete,
     TaskCreate,
     TaskAddTag,
-    TaskRemoveTag, change_status,
+    TaskRemoveTag,
+    change_status,
 )
 
 app_name = "tasks"
