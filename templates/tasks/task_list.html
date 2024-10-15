@@ -12,22 +12,20 @@
             {% if task.is_done %}
               <span style="color: green">
                 Done
-                <a href="{% url 'tasks:task_change-status' pk=task.id %}" class="btn link-to-page" style="float: right; background-color: green; color: white;">Undo</a>
+                <a href="{% url 'tasks:task_change-status' pk=task.id %}" class="btn link-to-page" style="float: right; background-color: grey; color: white;">Undo</a>
               </span>
             {% else %}
               <span style="color: red">
                 Not done
-                <a href="{% url 'tasks:task_change-status' pk=task.id %}" class="btn link-to-page" style="float: right; background-color: grey; color: white;">Complete</a>
+                <a href="{% url 'tasks:task_change-status' pk=task.id %}" class="btn link-to-page" style="float: right; background-color: green; color: white;">Complete</a>
               </span>
             {% endif %}
           </strong>
         </li>
         <li><p>
           Created: {{ task.date_of_create }} 
-          {% if task.deadline %}
+          {% if task.is_done %}
               Deadline: {{ task.deadline }}
-          {% else %}
-              Not deadline
           {% endif %}
         </p></li>
         <li>
