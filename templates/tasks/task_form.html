@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  {% if not task %}
+    <h1>{{ object|yesno:"Update,Create" }} task</h1>
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {{ form|crispy }}
+      <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+  {% else %}
+    <h2>Task: {{ task.content }}</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" name="add_tag">Add Tag</button>
+    </form>
+    
+    <h3>Existing Tags:</h3>
+    <ul>
+      {% for tag in task.tags.all %}
+        <li>
+          {{ tag.name }}
+          <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="tag_id" value="{{ tag.id }}">
+            <button type="submit" name="delete_tag">Delete</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}
