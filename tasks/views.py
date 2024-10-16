@@ -11,12 +11,6 @@ class TaskList(generic.ListView):
     context_object_name = "tasks"
     template_name = "tasks/task_list.html"
 
-    def toggle_done(request, pk):
-        task = get_object_or_404(Task, pk=pk)
-        task.done = not task.done
-        task.save()
-        return redirect("tasks:index")
-
     def get_queryset(self):
         return Task.objects.order_by("is_done", "-date_of_create")
 
