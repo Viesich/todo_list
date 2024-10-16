@@ -14,7 +14,7 @@ class ModelsTests(TestCase):
         )
         self.assertEqual(str(task), "Test Task")
 
-    def test_default_value_is_done_task(self):
+    def test_default_false_is_done_task(self) -> None:
         task = Task.objects.create(
             content="Test Task",
             deadline=timezone.now()
@@ -22,13 +22,10 @@ class ModelsTests(TestCase):
         self.assertEqual(task.is_done, False)
 
     def test_tag_str(self) -> None:
-        tag = Tag.objects.create(
-            name="Test",
-            deadline=timezone.now()
-        )
+        tag = Tag.objects.create(name="Test")
         self.assertEqual(str(tag), "Test")
 
-    def test_task_tag_relationship(self):
+    def test_task_tag_relationship(self) -> None:
         tag1 = Tag.objects.create(name="Test1")
         tag2 = Tag.objects.create(name="Test2")
         task = Task.objects.create(
@@ -38,7 +35,7 @@ class ModelsTests(TestCase):
         task.tags.set([tag1, tag2])
         self.assertIn(tag1, task.tags.all())
 
-    def test_tag_name_length(self):
+    def test_tag_name_length(self) -> None:
         tag = Tag.objects.create(name="T" * 51)
         with self.assertRaises(ValidationError):
             tag.full_clean()

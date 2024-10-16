@@ -17,4 +17,7 @@ class AddTagForm(forms.Form):
 
 
 class RemoveTagForm(forms.Form):
-    tag = forms.ModelChoiceField(queryset=Tag.objects.all(), label="Remove a Tag")
+    tag = forms.ModelChoiceField(
+        queryset=Tag.objects.all(),
+        label="Remove a Tag"
+    )

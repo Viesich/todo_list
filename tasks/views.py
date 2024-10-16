@@ -1,6 +1,7 @@
 from django.views import generic
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404, render
+from django.http import HttpResponse, HttpRequest
 
 from tasks.forms import TaskForm, AddTagForm, RemoveTagForm
 from tasks.models import Task, Tag
@@ -11,11 +12,11 @@ class TaskList(generic.ListView):
     context_object_name = "tasks"
     template_name = "tasks/task_list.html"
 
-    def get_queryset(self):
+    def get_queryset(self) -> Task:
         return Task.objects.order_by("is_done", "-date_of_create")
 
 
-def change_status(request, pk):
+def change_status(request: HttpRequest, pk: int) -> HttpResponse:
     task = get_object_or_404(Task, pk=pk)
     if task.is_done:
         task.is_done = False
@@ -37,7 +38,7 @@ class TaskAddTag(generic.View):
     template_name = "tasks/task_add_tag.html"
     success_url = reverse_lazy("tasks:index")
 
-    def get(self, request, pk):
+    def get(self, request: HttpResponse, pk: int) -> HttpResponse:
         task = get_object_or_404(Task, pk=pk)
         form = AddTagForm()
         tags = Tag.objects.exclude(tasks=task)
@@ -48,7 +49,7 @@ class TaskAddTag(generic.View):
         }
         return render(request, self.template_name, context)
 
-    def post(self, request, pk):
+    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
         task = get_object_or_404(Task, pk=pk)
         form = AddTagForm(request.POST)
 
@@ -71,7 +72,7 @@ class TaskRemoveTag(generic.View):
     template_name = "tasks/task_remove_tag.html"
     success_url = reverse_lazy("tasks:index")
 
-    def get(self, request, pk):
+    def get(self, request: HttpRequest, pk: int) -> HttpResponse:
         task = get_object_or_404(Task, pk=pk)
         form = RemoveTagForm()
         tags = task.tags.all()
@@ -82,7 +83,7 @@ class TaskRemoveTag(generic.View):
         }
         return render(request, self.template_name, context)
 
-    def post(self, request, pk):
+    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
         task = get_object_or_404(Task, pk=pk)
         form = RemoveTagForm(request.POST)
 
@@ -106,7 +107,7 @@ class TagList(generic.ListView):
     context_object_name = "tags"
     template_name = "tasks/tag_list.html"
 
-    def get_queryset(self):
+    def get_queryset(self) -> Tag:
         return Tag.objects.all()
 
 
