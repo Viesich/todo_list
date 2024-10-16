@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
+
 from tasks.forms import TaskForm, AddTagForm, RemoveTagForm
 from tasks.models import Task, Tag
 
