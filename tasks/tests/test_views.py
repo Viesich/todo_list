@@ -120,7 +120,7 @@ class TaskAddTagViewTests(TestCase):
 
     def test_get_add_tag_view(self) -> None:
         response = self.client.get(self.url)
-        self.assertTemplateUsed(response, "tasks/task_add_tag.html")
+        self.assertTemplateUsed(response, "tasks/task_toggle_tag.html")
         self.assertEqual(response.context["task"], self.task)
         self.assertIn("form", response.context)
         tags = response.context["tags"]

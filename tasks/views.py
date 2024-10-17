@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404, render
 from django.http import HttpResponse, HttpRequest
 
-from tasks.forms import TaskForm, AddTagForm, RemoveTagForm
+from tasks.forms import TaskForm, AddTagForm
 from tasks.models import Task, Tag
 
 
@@ -34,14 +34,14 @@ class TaskCreate(generic.CreateView):
     template_name = "tasks/task_form.html"
 
 
-class TaskAddTag(generic.View):
-    template_name = "tasks/task_add_tag.html"
+class TaskToggleTag(generic.View):
+    template_name = "tasks/task_toggle_tag.html"
     success_url = reverse_lazy("tasks:index")
 
-    def get(self, request: HttpResponse, pk: int) -> HttpResponse:
+    def get(self, request: HttpRequest, pk: int) -> HttpResponse:
         task = get_object_or_404(Task, pk=pk)
         form = AddTagForm()
-        tags = Tag.objects.exclude(tasks=task)
+        tags = Tag.objects.all()
         context = {
             "task": task,
             "form": form,
@@ -55,45 +55,16 @@ class TaskAddTag(generic.View):
 
         if form.is_valid():
             tag = form.cleaned_data["tag"]
-            task.tags.add(tag)
+
+            if tag in task.tags.all():
+                task.tags.remove(tag)
+            else:
+                task.tags.add(tag)
+
             task.save()
             return redirect(self.success_url)
 
         tags = Tag.objects.all()
-        context = {
-            "task": task,
-            "form": form,
-            "tags": tags,
-        }
-        return render(request, self.template_name, context)
-
-
-class TaskRemoveTag(generic.View):
-    template_name = "tasks/task_remove_tag.html"
-    success_url = reverse_lazy("tasks:index")
-
-    def get(self, request: HttpRequest, pk: int) -> HttpResponse:
-        task = get_object_or_404(Task, pk=pk)
-        form = RemoveTagForm()
-        tags = task.tags.all()
-        context = {
-            "task": task,
-            "form": form,
-            "tags": tags,
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
-        task = get_object_or_404(Task, pk=pk)
-        form = RemoveTagForm(request.POST)
-
-        if form.is_valid():
-            tag = form.cleaned_data["tag"]
-            task.tags.remove(tag)
-            task.save()
-            return redirect(self.success_url)
-
-        tags = task.tags.all()
         context = {
             "task": task,
             "form": form,

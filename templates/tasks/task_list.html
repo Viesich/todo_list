@@ -4,7 +4,8 @@
     TODO list
     <a href="{% url 'tasks:task_create' %}" class="btn btn-primary link-to-page" style="float: right">Add task</a>
   </h1>
-   {% for task in tasks %}
+
+  {% for task in tasks %}
     <ul>
         <li>
           <strong>
@@ -23,9 +24,9 @@
           </strong>
         </li>
         <li><p>
-          Created: {{ task.date_of_create }} 
-          {% if task.is_done %}
-              Deadline: {{ task.deadline }}
+          Created: {{ task.date_of_create }}
+          {% if task.deadline %}
+              | Deadline: {{ task.deadline }}
           {% endif %}
         </p></li>
         <li>
@@ -35,8 +36,11 @@
           {% empty %}
             No tags
           {% endfor %}
-          <a href="{% url 'tasks:task-add-tag' pk=task.id %}">Update</a>
-          <a href="{% url 'tasks:task-remove-tag' pk=task.id %}">Delete</a>
+        </li>
+        <li>
+          <a href="{% url 'tasks:task-toggle-tag' pk=task.id %}" class="btn btn-secondary">
+            Manage Tags
+          </a>
         </li>
     </ul>
   {% endfor %}

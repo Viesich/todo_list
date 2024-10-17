@@ -7,19 +7,17 @@ from tasks.views import (
     TagUpdate,
     TagDelete,
     TaskCreate,
-    TaskAddTag,
-    TaskRemoveTag,
     change_status,
+    TaskToggleTag,
 )
 
 app_name = "tasks"
 urlpatterns = [
     path("", TaskList.as_view(), name="index"),
-    path("task/<int:pk>/add_tags/", TaskAddTag.as_view(), name="task-add-tag"),
     path(
-        "task/<int:pk>/remove_tags/",
-        TaskRemoveTag.as_view(),
-        name="task-remove-tag"
+        "task/<int:pk>/toggle_tag/",
+        TaskToggleTag.as_view(),
+        name="task-toggle-tag"
     ),
     path(
         "task/<int:pk>/toggle_done/", change_status, name="task_change-status"
