@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Toggle Tag for {{ task.content }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Toggle Tag</button>
+</form>
+<h3>Tags Associated with Task:</h3>
+<ul>
+    {% for tag in task.tags.all %}
+        <li>{{ tag.name }}</li>
+    {% empty %}
+        <li>No tags associated with this task.</li>
+    {% endfor %}
+</ul>
+<h3>All Tags:</h3>
+<ul>
+    {% for tag in tags %}
+        <li>{{ tag.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
