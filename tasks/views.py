@@ -18,10 +18,7 @@ class TaskList(generic.ListView):
 
 def change_status(request: HttpRequest, pk: int) -> HttpResponse:
     task = get_object_or_404(Task, pk=pk)
-    if task.is_done:
-        task.is_done = False
-    else:
-        task.is_done = True
+    task.is_done = True if task.is_done else False
     task.save()
     return redirect("tasks:index")
 
@@ -39,13 +36,10 @@ class TaskToggleTag(generic.View):
     success_url = reverse_lazy("tasks:index")
 
     def get(self, request: HttpRequest, pk: int) -> HttpResponse:
-        task = get_object_or_404(Task, pk=pk)
-        form = AddTagForm()
-        tags = Tag.objects.all()
         context = {
-            "task": task,
-            "form": form,
-            "tags": tags,
+            "task": get_object_or_404(Task, pk=pk),
+            "form": AddTagForm(),
+            "tags": Tag.objects.all(),
         }
         return render(request, self.template_name, context)
 
@@ -64,11 +58,10 @@ class TaskToggleTag(generic.View):
             task.save()
             return redirect(self.success_url)
 
-        tags = Tag.objects.all()
         context = {
             "task": task,
             "form": form,
-            "tags": tags,
+            "tags": Tag.objects.all(),
         }
         return render(request, self.template_name, context)
 
